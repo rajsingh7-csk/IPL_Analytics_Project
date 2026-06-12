@@ -1,0 +1,44 @@
+IPL PLAYER ANALYSIS REPORT
+==================================================
+
+TOP RUN SCORERS
+batter
+V Kohli           8014
+S Dhawan          6769
+RG Sharma         6630
+DA Warner         6567
+SK Raina          5536
+MS Dhoni          5243
+AB de Villiers    5181
+CH Gayle          4997
+RV Uthappa        4954
+KD Karthik        4843
+Name: batsman_runs, dtype: int64
+
+TOP SIX HITTERS
+batter
+CH Gayle          359
+RG Sharma         281
+V Kohli           273
+AB de Villiers    253
+MS Dhoni          252
+DA Warner         236
+KA Pollard        224
+AD Russell        209
+SV Samson         206
+SK Raina          204
+dtype: int64
+
+TOP WICKET TAKERS
+bowler
+YS Chahal     213
+DJ Bravo      207
+PP Chawla     201
+SP Narine     200
+R Ashwin      198
+B Kumar       195
+SL Malinga    188
+A Mishra      183
+JJ Bumrah     182
+RA Jadeja     169
+dtype: int64

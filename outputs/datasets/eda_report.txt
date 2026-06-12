@@ -1,0 +1,46 @@
+IPL EDA REPORT
+==================================================
+
+Total Matches: 21
+Total Teams: 10
+
+Top Winning Teams
+winner
+Kolkata Knight Riders          4
+Punjab Kings                   3
+Chennai Super Kings            3
+Royal Challengers Bangalore    3
+Delhi Capitals                 2
+Sunrisers Hyderabad            2
+Rising Pune Supergiants        2
+Kochi Tuskers Kerala           1
+Rajasthan Royals               1
+Name: count, dtype: int64
+
+Top Toss Winning Teams
+toss_winner
+Kolkata Knight Riders          5
+Delhi Capitals                 3
+Chennai Super Kings            3
+Rising Pune Supergiants        3
+Sunrisers Hyderabad            2
+Punjab Kings                   2
+Kochi Tuskers Kerala           1
+Royal Challengers Bangalore    1
+Rajasthan Royals               1
+Name: count, dtype: int64
+
+Top Venues
+venue
+Eden Gardens                                           4
+M Chinnaswamy Stadium                                  3
+Feroz Shah Kotla                                       2
+Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium    2
+Rajiv Gandhi International Stadium, Uppal              2
+Newlands                                               1
+Kingsmead                                              1
+SuperSport Park                                        1
+Nehru Stadium                                          1
+Sawai Mansingh Stadium                                 1
+Name: count, dtype: int64
+
