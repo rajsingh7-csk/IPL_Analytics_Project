@@ -4,9 +4,9 @@ import joblib
 from PIL import Image
 import os
 
-# =====================================
+# ==============================
 # PAGE CONFIG
-# =====================================
+# ==============================
 
 st.set_page_config(
     page_title="IPL Analytics Dashboard",
@@ -14,15 +14,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# =====================================
+# ==============================
 # LOAD DATA
-# =====================================
+# ==============================
 
 matches = pd.read_csv("data/clean_matches.csv")
 
-# =====================================
-# SIDEBAR NAVIGATION
-# =====================================
+# ==============================
+# SIDEBAR
+# ==============================
 
 st.sidebar.title("🏏 IPL Analytics")
 
@@ -38,17 +38,15 @@ page = st.sidebar.radio(
     ]
 )
 
-# =====================================
+# ==============================
 # HOME
-# =====================================
+# ==============================
 
 if page == "Home":
 
     st.title("🏏 IPL Analytics Dashboard")
 
-    teams = sorted(
-        list(set(matches["team1"]).union(set(matches["team2"])))
-    )
+    teams = sorted(list(set(matches["team1"]).union(set(matches["team2"]))))
 
     col1, col2, col3 = st.columns(3)
 
@@ -61,20 +59,17 @@ if page == "Home":
     st.subheader("Project Overview")
 
     st.write("""
-    This IPL Analytics Dashboard provides:
-
     • Team Performance Analysis  
     • Player Performance Analysis  
-    • Toss Analysis  
-    • Venue Analysis  
+    • Toss & Venue Analysis  
     • Match Winner Prediction (ML Model)  
     • Team Comparison  
-    • Player Comparison  
+    • Player Comparison (Batting + Bowling)
     """)
 
-# =====================================
+# ==============================
 # TEAM ANALYSIS
-# =====================================
+# ==============================
 
 elif page == "Team Analysis":
 
@@ -97,9 +92,9 @@ elif page == "Team Analysis":
         else:
             st.error(f"{file} not found")
 
-# =====================================
+# ==============================
 # PLAYER ANALYSIS
-# =====================================
+# ==============================
 
 elif page == "Player Analysis":
 
@@ -125,9 +120,9 @@ elif page == "Player Analysis":
         else:
             st.error(f"{file} not found")
 
-# =====================================
+# ==============================
 # MATCH PREDICTION
-# =====================================
+# ==============================
 
 elif page == "Match Prediction":
 
@@ -136,8 +131,7 @@ elif page == "Match Prediction":
     model = joblib.load("models/winner_predictor.pkl")
 
     teams = sorted(list(set(matches["team1"]).union(set(matches["team2"]))))
-
-    venues = sorted(matches["venue"].unique())
+    venues = sorted(matches["venue"].dropna().unique())
 
     team1 = st.selectbox("Team 1", teams)
     team2 = st.selectbox("Team 2", teams, index=1)
@@ -162,9 +156,9 @@ elif page == "Match Prediction":
 
         st.success(f"🏆 Predicted Winner: {prediction}")
 
-# =====================================
+# ==============================
 # TEAM COMPARISON
-# =====================================
+# ==============================
 
 elif page == "Team Comparison":
 
@@ -199,9 +193,9 @@ elif page == "Team Comparison":
 
     st.dataframe(df, use_container_width=True)
 
-# =====================================
-# PLAYER COMPARISON
-# =====================================
+# ==============================
+# PLAYER COMPARISON (UPDATED WITH BOWLING)
+# ==============================
 
 elif page == "Player Comparison":
 
@@ -221,24 +215,60 @@ elif page == "Player Comparison":
 
     def player_stats(player):
 
-        data = deliveries[deliveries["batter"] == player]
+        # BATSMAN STATS
+        bat = deliveries[deliveries["batter"] == player]
 
-        runs = data["batsman_runs"].sum()
-        balls = data.shape[0]
-        fours = (data["batsman_runs"] == 4).sum()
-        sixes = (data["batsman_runs"] == 6).sum()
-
+        runs = bat["batsman_runs"].sum()
+        balls = bat.shape[0]
+        fours = (bat["batsman_runs"] == 4).sum()
+        sixes = (bat["batsman_runs"] == 6).sum()
         strike_rate = (runs / balls * 100) if balls > 0 else 0
 
-        return runs, balls, fours, sixes, strike_rate
+        # BOWLER STATS
+        bowl = deliveries[deliveries["bowler"] == player]
+
+        balls_bowled = bowl.shape[0]
+        runs_conceded = bowl["total_runs"].sum()
+        wickets = bowl["is_wicket"].sum()
+
+        overs = balls_bowled / 6
+        economy = (runs_conceded / overs) if overs > 0 else 0
+
+        return (
+            runs,
+            balls,
+            fours,
+            sixes,
+            strike_rate,
+            balls_bowled,
+            runs_conceded,
+            wickets,
+            economy
+        )
 
     a = player_stats(player_a)
     b = player_stats(player_b)
 
     comp = pd.DataFrame({
-        "Metric": ["Runs", "Balls", "Fours", "Sixes", "Strike Rate"],
-        player_a: [a[0], a[1], a[2], a[3], round(a[4], 2)],
-        player_b: [b[0], b[1], b[2], b[3], round(b[4], 2)]
+        "Metric": [
+            "Runs",
+            "Balls Faced",
+            "Fours",
+            "Sixes",
+            "Strike Rate",
+            "Balls Bowled",
+            "Runs Conceded",
+            "Wickets",
+            "Economy Rate"
+        ],
+        player_a: [
+            a[0], a[1], a[2], a[3], round(a[4], 2),
+            a[5], a[6], a[7], round(a[8], 2)
+        ],
+        player_b: [
+            b[0], b[1], b[2], b[3], round(b[4], 2),
+            b[5], b[6], b[7], round(b[8], 2)
+        ]
     })
 
     st.dataframe(comp, use_container_width=True)
