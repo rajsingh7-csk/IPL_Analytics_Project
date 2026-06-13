@@ -1,46 +1,48 @@
 IPL EDA REPORT
 ==================================================
 
-Total Matches: 21
-Total Teams: 10
+Total Matches: 1090
+Total Teams: 17
 
 Top Winning Teams
 winner
-Kolkata Knight Riders          4
-Punjab Kings                   3
-Chennai Super Kings            3
-Royal Challengers Bangalore    3
-Delhi Capitals                 2
-Sunrisers Hyderabad            2
-Rising Pune Supergiants        2
-Kochi Tuskers Kerala           1
-Rajasthan Royals               1
+Mumbai Indians                 144
+Chennai Super Kings            138
+Kolkata Knight Riders          131
+Royal Challengers Bangalore    116
+Delhi Capitals                 115
+Rajasthan Royals               112
+Punjab Kings                   112
+Sunrisers Hyderabad             88
+Deccan Chargers                 29
+Gujarat Titans                  28
 Name: count, dtype: int64
 
 Top Toss Winning Teams
 toss_winner
-Kolkata Knight Riders          5
-Delhi Capitals                 3
-Chennai Super Kings            3
-Rising Pune Supergiants        3
-Sunrisers Hyderabad            2
-Punjab Kings                   2
-Kochi Tuskers Kerala           1
-Royal Challengers Bangalore    1
-Rajasthan Royals               1
+Mumbai Indians                 143
+Delhi Capitals                 129
+Kolkata Knight Riders          122
+Chennai Super Kings            121
+Rajasthan Royals               118
+Royal Challengers Bangalore    112
+Punjab Kings                   109
+Sunrisers Hyderabad             88
+Deccan Chargers                 43
+Gujarat Titans                  22
 Name: count, dtype: int64
 
 Top Venues
 venue
-Eden Gardens                                           4
-M Chinnaswamy Stadium                                  3
-Feroz Shah Kotla                                       2
-Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium    2
-Rajiv Gandhi International Stadium, Uppal              2
-Newlands                                               1
-Kingsmead                                              1
-SuperSport Park                                        1
-Nehru Stadium                                          1
-Sawai Mansingh Stadium                                 1
+Eden Gardens                                  77
+Wankhede Stadium                              73
+M Chinnaswamy Stadium                         63
+Feroz Shah Kotla                              59
+Rajiv Gandhi International Stadium, Uppal     49
+MA Chidambaram Stadium, Chepauk               48
+Sawai Mansingh Stadium                        47
+Dubai International Cricket Stadium           46
+Wankhede Stadium, Mumbai                      45
+Punjab Cricket Association Stadium, Mohali    35
 Name: count, dtype: int64
 

@@ -1,39 +1,62 @@
 import pandas as pd
+import os
 
-# ==========================
-# Load Dataset
-# ==========================
+# =====================================
+# CREATE DATA DIRECTORY IF NOT EXISTS
+# =====================================
+
+os.makedirs("data", exist_ok=True)
+
+# =====================================
+# LOAD DATASET
+# =====================================
 
 matches = pd.read_csv("data/matches.csv")
 
-print("=" * 50)
+print("=" * 60)
 print("IPL DATA PREPROCESSING")
-print("=" * 50)
+print("=" * 60)
 
-print(f"\nOriginal Dataset Shape: {matches.shape}")
+print("\nOriginal Dataset Shape:")
+print(matches.shape)
 
-# ==========================
-# Missing Values
-# ==========================
+# =====================================
+# REMOVE DUPLICATES
+# =====================================
+
+duplicate_count = matches.duplicated().sum()
+
+print(f"\nDuplicate Records Found: {duplicate_count}")
+
+matches.drop_duplicates(inplace=True)
+
+# =====================================
+# HANDLE MISSING VALUES
+# =====================================
 
 print("\nMissing Values Before Cleaning:")
 print(matches.isnull().sum())
 
-# Remove rows with missing values
-matches.dropna(inplace=True)
+# Fill important columns instead of removing rows
 
-# ==========================
-# Duplicate Records
-# ==========================
+if "city" in matches.columns:
+    matches["city"] = matches["city"].fillna("Unknown")
 
-duplicate_count = matches.duplicated().sum()
-print(f"\nDuplicate Rows Found: {duplicate_count}")
+if "method" in matches.columns:
+    matches["method"] = matches["method"].fillna("Normal")
 
-matches.drop_duplicates(inplace=True)
+if "umpire1" in matches.columns:
+    matches["umpire1"] = matches["umpire1"].fillna("Unknown")
 
-# ==========================
-# Standardize Team Names
-# ==========================
+if "umpire2" in matches.columns:
+    matches["umpire2"] = matches["umpire2"].fillna("Unknown")
+
+if "winner" in matches.columns:
+    matches = matches[matches["winner"].notna()]
+
+# =====================================
+# STANDARDIZE TEAM NAMES
+# =====================================
 
 team_name_mapping = {
     "Delhi Daredevils": "Delhi Capitals",
@@ -42,42 +65,36 @@ team_name_mapping = {
 
 matches.replace(team_name_mapping, inplace=True)
 
-# ==========================
-# Date Formatting
-# ==========================
+# =====================================
+# DATE CONVERSION
+# =====================================
 
 if "date" in matches.columns:
-    matches["date"] = pd.to_datetime(matches["date"])
+    matches["date"] = pd.to_datetime(
+        matches["date"],
+        errors="coerce"
+    )
 
-# ==========================
-# Dataset Information
-# ==========================
+# =====================================
+# FINAL DATASET INFO
+# =====================================
 
-print(f"\nCleaned Dataset Shape: {matches.shape}")
+print("\nMissing Values After Cleaning:")
+print(matches.isnull().sum())
 
-print("\nDataset Information:")
-print(matches.info())
+print("\nCleaned Dataset Shape:")
+print(matches.shape)
 
-print("\nUnique Teams:")
-
-teams = pd.unique(
-    matches[["team1", "team2"]]
-    .values
-    .ravel()
-)
-
-for team in sorted(teams):
-    print(team)
-
-# ==========================
-# Save Clean Dataset
-# ==========================
+# =====================================
+# SAVE CLEAN DATASET
+# =====================================
 
 matches.to_csv(
     "data/clean_matches.csv",
     index=False
 )
 
-print("\nCleaned dataset saved successfully!")
-print("File Name: clean_matches.csv")
-print("\nPreprocessing Completed Successfully.")
+print("\nClean Dataset Saved Successfully!")
+print("File: data/clean_matches.csv")
+
+print("\nPREPROCESSING COMPLETED SUCCESSFULLY")
